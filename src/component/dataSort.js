@@ -17,7 +17,7 @@ export default function dataSort(eleve){
         }
         return new Date(d[2],+(d[1]-1),d[0])
     }
-    
+     
 
     for (let com of eleve){
         nomCours = com.products[0].name;
@@ -43,6 +43,7 @@ export default function dataSort(eleve){
       
         }
     }
+    console.log("coucou")
     doneTrier.sort((a,b)=>a[2]-b[2])
     return doneTrier
 }

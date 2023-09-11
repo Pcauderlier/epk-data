@@ -4,6 +4,7 @@ import comandes from '../data/data.json'
 import { useState } from 'react';
 import dataSort from './dataSort'
 import TableauCours from './TableauCours';
+import SearchBar from './SearchBar';
 /*
 {"order_number":"13868",
 "order_status":"Termin\u00e9e",
@@ -26,13 +27,17 @@ import TableauCours from './TableauCours';
 function App() {
   let [sortedData, updateSortedData] = useState(dataSort(comandes));
 
+
   return (
-    <div>
-      {
-        sortedData.map((eleve) => 
-        <TableauCours cours={eleve}/>
-        )
-      }
+    <div id="page ">
+      <SearchBar/>
+      <div id="boiteCours">
+        {
+          sortedData.map((eleve) => 
+          <TableauCours cours={eleve}/>
+          )
+        }
+      </div>
     </div>
 
   );

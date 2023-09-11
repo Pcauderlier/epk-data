@@ -1,0 +1,36 @@
+ th, td{
+    border: 1px solid;
+    
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+#container{
+    display: inline-block;
+    width: 48%;
+    border: 2px solid red;
+    margin : 10px;
+    padding-bottom: 20px;
+    background-color: white;
+}
+table{
+
+    border-collapse: collapse;
+    
+
+    border: 1px black;
+    margin: 0 auto;
+   
+}
+
+h3 {
+    margin : 10px;
+    font-size: larger;
+    font-weight: bold;
+    text-align: center;
+    width : 90%;
+}
+.numberCenter{
+    text-align: center;
+}

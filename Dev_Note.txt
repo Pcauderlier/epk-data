@@ -4,7 +4,7 @@ A faire :
 - Mettre en forme avec mon gars le CSS 
 - Trier par date (check)
 - fonction de recherche pour retrouver les cours
-- Automatiser le reload de la DB json
+- Automatiser le reload de la DB json (surement peu probable)
 - installer NPM sur le MAC
 - Automatomatiser les comandes pour acceder a l'aplli sur le MAC
 

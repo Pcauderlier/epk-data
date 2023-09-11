@@ -1,4 +1,4 @@
-
+import "../style/TableauCours.css"
 
 
 export default function TableauCours({cours}){//cours est une liste contenant en [0], le nom du cours et en [1], une liste d'éleve
@@ -18,24 +18,32 @@ export default function TableauCours({cours}){//cours est une liste contenant en
       "item_price":82.64}
     ],*/
     return (
+        <div id="container">
+       
+            <h3>{cours[0]}</h3>
+            
         <table>
-            <caption>{cours[0]}</caption>
-            <tr>
-                <th>Numeros de Client</th>
-                <th>Prenom</th>
-                <th>Nom</th>
-                <th>Montant Payer</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Numeros de Client</th>
+                    <th>Prenom</th>
+                    <th>Nom</th>
+                    <th>Montant Payer</th>
+                </tr>
+            </thead>
+            <tbody>
             {
                 cours[1].map((eleve) => 
                 <tr>
-                    <td>{eleve.order_number}</td>
+                    <td className="numberCenter">{eleve.order_number}</td>
                     <td>{eleve.billing_first_name}</td>
                     <td>{eleve.billing_last_name}</td>
-                    <td>{eleve.order_total}</td>
+                    <td className="numberCenter">{eleve.order_total}</td>
                 </tr>
                 )
             }
+            </tbody>
         </table>
+        </div>
     )
 }

@@ -1,0 +1,26 @@
+.topBorder{
+    height: 125px;
+    width : 100%;
+    background-color: pink;
+    display:flex;
+    flex-direction: row;
+    z-index: 1;
+    position: fixed;
+}
+#logoEPK{
+    height: 90%;
+    margin-left: 30px;
+}
+h1{
+    width : 70%;
+    margin : 0; 
+    text-align: center;
+    margin-top: 40px;
+}
+#search{
+    background-color: green;
+    width: 20%;
+    height: 70%;
+    margin: auto;
+    margin-right: 20px;
+}
