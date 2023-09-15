@@ -28,7 +28,7 @@ export default function TableauCours({cours}){//cours est une liste contenant en
                     <th>Numeros de Client</th>
                     <th>Prenom</th>
                     <th>Nom</th>
-                    <th>Montant Payer</th>
+                    <th>Etat de la comande</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,7 +38,7 @@ export default function TableauCours({cours}){//cours est une liste contenant en
                     <td className="numberCenter">{eleve.order_number}</td>
                     <td>{eleve.billing_first_name}</td>
                     <td>{eleve.billing_last_name}</td>
-                    <td className="numberCenter">{eleve.order_total}</td>
+                    <td className="numberCenter">{eleve.order_status}</td>
                 </tr>
                 )
             }
