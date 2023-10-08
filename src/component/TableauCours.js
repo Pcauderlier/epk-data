@@ -17,6 +17,7 @@ export default function TableauCours({cours}){//cours est une liste contenant en
       "qty":"1",
       "item_price":82.64}
     ],*/
+    let num = 0;
     return (
         <div id="container">
        
@@ -25,6 +26,7 @@ export default function TableauCours({cours}){//cours est une liste contenant en
         <table>
             <thead>
                 <tr>
+                    <th>N°</th>
                     <th>Numeros de Client</th>
                     <th>Prenom</th>
                     <th>Nom</th>
@@ -34,14 +36,18 @@ export default function TableauCours({cours}){//cours est une liste contenant en
             </thead>
             <tbody>
             {
-                cours[1].map((eleve) => 
+                cours[1].map((eleve) => {
+                    num+=1;
+                    return(
                 <tr>
+                    <td>{num}</td>
                     <td className="numberCenter">{eleve.order_number}</td>
                     <td>{eleve.billing_first_name}</td>
                     <td>{eleve.billing_last_name}</td>
                     <td className="numberCenter">{eleve.order_status}</td>
                     <td>{eleve.billing_email}</td>
                 </tr>
+                )}
                 )
             }
             </tbody>
