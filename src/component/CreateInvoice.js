@@ -14,59 +14,115 @@ export default function CreateInvoice({commande}){
             height : 150,
             width : 150,
             position : 'absolute',
-            top : 20,
+            top : 10,
             right : 70
         },
         p1 : {
-            fontSize : 14,
+            fontSize : 12,
             lineHeight : 1.8,
             position : 'absolute',
-            top : 80
+            top : 70
             
         },
         p2 :{
             position : 'absolute',
             right : 90,
-            top : 190,
-            fontSize : 14,
+            top : 170,
+            fontSize : 12,
             lineHeight : 1.8,
         },
         p3 : {
             position : 'absolute',
-            top : 300,
+            top : 230,
             left : 150,
-            fontSize : 14,
+            fontSize : 12,
             lineHeight : 1.8,
 
+        },
+        tableau : {
+            border : '2px solid black',
+            position : 'absolute',
+            bottom : 150,
+            left : 25,
+            width : 440
+        },
+        ligne : {
+            display : 'flex',
+            flexDirection : 'row',
+            borderBottom : '2px solid black',
+            height : 50,
+        },
+        item : {
+            
+            borderRight : '2px solid black',
+            width : 220,
+            marginLeft : 20,
+            fontSize : 14,
+            lineHeight : 1.8,
+            display : 'flex',
+            textAlign : 'left',
+            justifyContent : 'center'
+        },
+        p4 : {
+            fontSize : 12,
+            lineHeight : 1.8,
+            position : 'absolute',
+            bottom : 50
         }
     });   
     
     const Invoice = () => (
         <Document>
             <Page style={style.page}>
-                <Image src={logo} style={style.image}/>
-                <View>
-                    <View style={style.p1}>
-                        <Text style={{color : 'red', fontSize : 18, lineHeight : 2, textDecoration : 'underline'}}>Ecole Professionnelle de Kinésiologie SRL</Text>
-                        <Text>Rue Jérôme Noël, 19</Text>
-                        <Text>1325 Chaumont Gistoux</Text>
-                        <Text>Téléphone : 0475/30 58 82</Text>
-                        <Text>Numéro TVA : BE 0764.541.825</Text>
-                        <Text>IBAN  BE 49-7320-5818-2671</Text>
+                <Image src={logo} style={style.image}/>                
+                <View style={style.p1}>
+                    <Text style={{color : 'red', fontSize : 16, lineHeight : 2, textDecoration : 'underline'}}>Ecole Professionnelle de Kinésiologie SRL</Text>
+                    <Text>Rue Jérôme Noël, 19</Text>
+                    <Text>1325 Chaumont Gistoux</Text>
+                    <Text>Téléphone : 0475/30 58 82</Text>
+                    <Text>Numéro TVA : BE 0764.541.825</Text>
+                    <Text>IBAN  BE 49-7320-5818-2671</Text>
+                </View>
+                <View style={style.p2}>
+                    <Text style={{textDecoration : 'underline', fontSize : 14}}>Facture n°EPK 23-{commande.order_number}</Text>
+                    <Text>Date : {commande.order_date}</Text>
+                </View>
+                <View style={style.p3}>
+                    <Text style={{textDecoration : 'underline', fontSize : 14}}>Client :</Text>
+                    <Text>Societé : {commande.sociaty}</Text>
+                    <Text>Nom : {commande.billing_name}</Text>
+                    <Text>Adresse : {commande.sociaty_adress}</Text>
+                    <Text>Ville : {commande.sociaty_city}</Text>
+                    <Text>TVA : </Text>
+                </View>
+                <View style={style.tableau}>
+                    <View style={style.ligne}>
+                        <Text style={style.item}>Description </Text>
+                        <Text style={style.item}>Montant </Text>
                     </View>
-                    <View style={style.p2}>
-                        <Text style={{textDecoration : 'underline', fontSize : 16}}>Facture n°EPK 23-{commande.order_number}</Text>
-                        <Text>Date : {commande.order_date}</Text>
+                    <View style={[style.ligne, {height : 120}]}>
+                        <Text style={style.item}>{commande.products[0].name}</Text>
+                        <Text style={style.item}>{commande.order_total} €</Text>
                     </View>
-                    <View style={style.p3}>
-                        <Text style={{textDecoration : 'underline', fontSize : 16}}>Client :</Text>
-                        <Text>Societé : {commande.sociaty}</Text>
-                        <Text>Nom : {commande.billing_name}</Text>
-                        <Text>Adresse : {commande.sociaty_adress}</Text>
-                        <Text>Ville : {commande.billing_city}</Text>
-                        <Text>TVA : </Text>
+                    <View style={style.ligne}>
+                        <Text style={style.item}>Total TVAC</Text>
+                        <Text style={style.item}>{commande.order_total} €</Text>
+                    </View>
+                    <View style={style.ligne}>
+                        <Text style={style.item}>Total HTVA </Text>
+                        <Text style={style.item}>{commande.products[0].item_price} €</Text>
+                    </View>
+                    <View style={style.ligne}>
+                        <Text style={style.item}>Total TVA </Text>
+                        <Text style={style.item}>{(commande.order_total-commande.products[0].item_price).toFixed(2)}</Text>
                     </View>
                 </View>
+                <View style={style.p4}>
+                    <Text>Facture acquittée</Text>
+                    <Text>Thienpont Caroline</Text>
+                    <Text>Administratrice EPK</Text>
+                </View>
+                
             </Page>
        </Document>
     );

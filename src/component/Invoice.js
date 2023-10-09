@@ -59,7 +59,7 @@ export default function Invoice(){
                     </div>
                     <div>
                         <label>Ville :  </label>
-                        <input type='text' value={com.billing_city}></input> 
+                        <input type='text' value={com.sociaty_city}></input> 
                     </div>
                     <div>
                         <label>Description :  </label>
