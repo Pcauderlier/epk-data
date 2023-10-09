@@ -5,6 +5,7 @@ import logo from "../img/LOGO_EPK.png"
 
 
 export default function CreateInvoice({commande}){
+    
     const style = StyleSheet.create({
         page : {
             marginLeft : 50,
@@ -89,20 +90,15 @@ export default function CreateInvoice({commande}){
                 </View>
                 <View style={style.p3}>
                     <Text style={{textDecoration : 'underline', fontSize : 14}}>Client :</Text>
-                    <Text>Societé : {commande.sociaty}</Text>
-                    <Text>Nom : {commande.billing_name}</Text>
-                    <Text>Adresse : {commande.sociaty_adress}</Text>
-                    <Text>Ville : {commande.sociaty_city}</Text>
-                    <Text>TVA : </Text>
+                    <Text>{commande.sociaty}</Text>
+                    <Text>{commande.billing_name}</Text>
+                    <Text>{commande.sociaty_adress}</Text>
+                    <Text>{commande.sociaty_city}</Text>
+                    <Text>{commande.TVA}</Text>
                 </View>
                 <View style={style.tableau}>
-                    <View style={style.ligne}>
-                        <Text style={style.item}>Description </Text>
-                        <Text style={style.item}>Montant </Text>
-                    </View>
-                    <View style={[style.ligne, {height : 120}]}>
-                        <Text style={style.item}>{commande.products[0].name}</Text>
-                        <Text style={style.item}>{commande.order_total} €</Text>
+                    <View style={[style.ligne, {height : 100}]}>
+                        <Text style={[style.item,{ width : 440, fontSize : 16}]}>{commande.products[0].name}</Text>
                     </View>
                     <View style={style.ligne}>
                         <Text style={style.item}>Total TVAC</Text>
@@ -131,8 +127,8 @@ export default function CreateInvoice({commande}){
         <div>
             <div>
                 <PDFViewer
-                width={600}
-                height={900}
+                width={467}
+                height={700}
                 >
                     <Invoice/>
                 </PDFViewer>
@@ -140,8 +136,8 @@ export default function CreateInvoice({commande}){
             <div>
                 <PDFDownloadLink
                 document={<Invoice/>}
-                fileName={`Facture commande ${commande.order_number}`}>
-                    <button>Télécharger la Facture</button>
+                fileName={`EPK23-${commande.order_number}`}>
+                    <button className="button">Télécharger la Facture</button>
                 </PDFDownloadLink>
             </div>
         </div>   
