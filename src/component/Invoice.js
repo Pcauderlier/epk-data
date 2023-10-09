@@ -5,6 +5,7 @@ import React from "react"
 import CreateInvoice from "./CreateInvoice"
 import '../style/Invoice.css'
 
+
 export default function Invoice(){
     let [search, updateSearch] = useState('')
     let [afficherDonne, updateAfficherDonne] = useState(false)
@@ -54,10 +55,10 @@ export default function Invoice(){
     
     return (
         <div>
-            <SearchBar/>
+            <SearchBar titre={'Création de facture'}/>
             <div id="invoicePage">
                 <div id="searchBox">
-                    <label>Entrer un Numéros de comande  </label>
+                    <label>Entrer un Numéro de commande  </label>
                     <input type='number' onChange={(e) => updateSearch(e.target.value)}></input>
                     <button className="button" onClick={()=>{searchCom()}}>rechercher</button>
                 </div>
@@ -66,7 +67,7 @@ export default function Invoice(){
                     <div></div>
                     :
                     (typeof(com) === 'boolean' ? 
-                    <div>Numéros de comande invalide ou introuvable</div>
+                    <div id="erreurMessage">Numéros de comande invalide ou introuvable</div>
                     :
                     <div id="data">
                         <div id="formBox">

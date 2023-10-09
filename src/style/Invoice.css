@@ -45,7 +45,18 @@ input {
     background-color: pink ;
 
 }
+button.button:hover{
+    box-shadow: 2px 2px black;
+}
+button.button:active{
+    color : white
+}
 
-.buton:active{
-    color: white;
+#erreurMessage {
+    margin: 20px;
+    font-size: 25px;
+    color : red;
+    text-decoration: underline;
+    font-weight: bolder;
+    text-align: center;
 }

@@ -34,7 +34,7 @@ function App() {
 
   return (
     <div id="page ">
-      <SearchBar/>
+      <SearchBar titre={"Présence à l'EPK"}/>
       <div id="boiteCours">
         {
           sortedData.map((eleve) => 

@@ -86,15 +86,16 @@ export default function CreateInvoice({commande}){
                 </View>
                 <View style={style.p2}>
                     <Text style={{textDecoration : 'underline', fontSize : 14}}>Facture n°EPK 23-{commande.order_number}</Text>
-                    <Text>Date : {commande.order_date}</Text>
+                    <Text>Date : {commande.order_date.split(' ')[0]}</Text>
                 </View>
                 <View style={style.p3}>
                     <Text style={{textDecoration : 'underline', fontSize : 14}}>Client :</Text>
                     <Text>{commande.sociaty}</Text>
+                    <Text>{commande.TVA}</Text>
                     <Text>{commande.billing_name}</Text>
                     <Text>{commande.sociaty_adress}</Text>
-                    <Text>{commande.sociaty_city}</Text>
-                    <Text>{commande.TVA}</Text>
+                    <Text>{commande.sociaty_city.replace(',','')}</Text>
+                    
                 </View>
                 <View style={style.tableau}>
                     <View style={[style.ligne, {height : 100}]}>
