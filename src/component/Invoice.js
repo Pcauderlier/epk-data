@@ -23,6 +23,7 @@ export default function Invoice(){
             city.current.value = '';
         }  
         updateCom(false)
+        updateResetVar(false)
         for (let order of comandes){
             if (order.order_number === search){
                 updateCom(order)
@@ -60,76 +61,76 @@ export default function Invoice(){
                     <input type='number' onChange={(e) => updateSearch(e.target.value)}></input>
                     <button className="button" onClick={()=>{searchCom()}}>rechercher</button>
                 </div>
-                <div id="data">
+                
                     {!afficherDonne ? 
                     <div></div>
                     :
                     (typeof(com) === 'boolean' ? 
                     <div>Numéros de comande invalide ou introuvable</div>
                     :
-                    <div id="formBox">
-                        <div className="infoBox">
-                            Numéros de commande :  {com.order_number} 
+                    <div id="data">
+                        <div id="formBox">
+                            <div className="infoBox">
+                                Numéros de commande :  {com.order_number} 
+                            </div>
+                            <div className="infoBox">
+                                Etats de la commande :  {com.order_status} 
+                            </div>
+                            <div className="infoBox">
+                                <div>Nom du client : {com.billing_name}</div>
+                            </div>
+                            <div className="infoBox">
+                                <div>Description : {com.products[0].name}</div>
+                            </div>
+                            <div className="infoBox">
+                                <div>Date : {com.order_date}</div>
+                            </div>
+                            <div className="infoBox">
+                                <label>Nom de la societé :  </label>
+                                <input type='text' placeholder={com.sociaty} ref={sociaty}></input> 
+                            </div>
+                            <div className="infoBox">
+                                <label>Numéros de TVA : </label>
+                                <input type='text' ref={TVA}></input>
+                            </div>
+                            <div className="infoBox">
+                                <label>Adresse societé :  </label>
+                                <input type='text' placeholder={com.sociaty_adress} ref={adress}></input> 
+                            </div>
+                            <div className="infoBox">
+                                <label>Ville :  </label>
+                                <input type='text' placeholder={com.sociaty_city} ref={city}></input> 
+                            </div>              
+                            <div className="infoBox">
+                                <div>Total TVAC : {com.order_total} € </div>
+                            </div>
+                            <div className="infoBox">
+                                <div>Total HTVA : {com.products[0].item_price} €</div>
+                            </div>
+                            <div className="infoBox">
+                                <div>Total TVA : {(com.order_total-com.products[0].item_price).toFixed(2)} €</div>
+                            </div>
+                            <div>
+                                <button className="button" onClick={() => modfif()}>Modifier</button>
+                            </div>
+                                                
                         </div>
-                        <div className="infoBox">
-                            Etats de la commande :  {com.order_status} 
+                        <div id="invoiceBox">
+                        <CreateInvoice commande={com}/>
                         </div>
-                        <div className="infoBox">
-                            <div>Nom du client : {com.billing_name}</div>
-                        </div>
-                        <div className="infoBox">
-                            <div>Description : {com.products[0].name}</div>
-                        </div>
-                        <div className="infoBox">
-                            <div>Date : {com.order_date}</div>
-                        </div>
-                        <div className="infoBox">
-                            <label>Nom de la societé :  </label>
-                            <input type='text' placeholder={com.sociaty} ref={sociaty}></input> 
-                        </div>
-                        <div className="infoBox">
-                            <label>Numéros de TVA : </label>
-                            <input type='text' ref={TVA}></input>
-                        </div>
-                        <div className="infoBox">
-                            <label>Adresse societé :  </label>
-                            <input type='text' placeholder={com.sociaty_adress} ref={adress}></input> 
-                        </div>
-                        <div className="infoBox">
-                            <label>Ville :  </label>
-                            <input type='text' placeholder={com.sociaty_city} ref={city}></input> 
-                        </div>              
-                        <div className="infoBox">
-                            <div>Total TVAC : {com.order_total} € </div>
-                        </div>
-                        <div className="infoBox">
-                            <div>Total HTVA : {com.products[0].item_price} €</div>
-                        </div>
-                        <div className="infoBox">
-                            <div>Total TVA : {(com.order_total-com.products[0].item_price).toFixed(2)} €</div>
-                        </div>
-                        <div>
-                            <button className="button" onClick={() => modfif()}>Modifier</button>
-                        </div>
-                                            
                     </div>
                     )
-                    }
-                    <div id="invoiceBox">                
-                        <CreateInvoice commande={com}/>                    
-                    </div>
+                    }            
                 </div>
-                
-
-            </div>
             
-            {/* <PDFDownloadLink document={<CreateInvoice/>} fileName="Test">
-                            {({loading}) => (loading ? <button>Chargement ... </button> : <button>Telecharger Facture</button>)}
-            </PDFDownloadLink> */}
-        </div>
+            </div>
         
     )   
     }
 
     // date.split(' ')[0])
     // city.replace(',','')
+    // {/* <CreateInvoice commande={com}/> */}
+    //  {/* <PDFDownloadLink document={<CreateInvoice/>} fileName="Test">
+    //                         {({loading}) => (loading ? <button>Chargement ... </button> : <button>Telecharger Facture</button>)}
+    //         </PDFDownloadLink> */}

@@ -1,7 +1,7 @@
 
 import '../style/App.css';
 import comandes from '../data/data.json'
-import { useState } from 'react';
+
 import dataSort from './dataSort'
 import TableauCours from './TableauCours';
 import SearchBar from './SearchBar';
@@ -29,7 +29,7 @@ import SearchBar from './SearchBar';
 
 
 function App() {
-  let [sortedData, updateSortedData] = useState(dataSort(comandes));
+  let sortedData= dataSort(comandes);
 
 
   return (
