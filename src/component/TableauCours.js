@@ -1,12 +1,21 @@
+import { useEffect, useState } from "react";
 import "../style/TableauCours.css"
+// import Axios from "axios";
 
+export default function TableauCours({course,ordersList}){
+    const [orders, updateOrders] = useState([]);
+    useEffect(() => {
+        if (ordersList){
+            ordersList.then((response) => {
+                updateOrders(response)
+            })
+        }
+    },[ordersList]);
 
-export default function TableauCours({cours}){//cours est une liste contenant en [0], le nom du cours et en [1], une liste d'éleve
-    let num = 0;
     return (
         <div id="container">
        
-            <h3>{cours[0]}</h3>
+            <h3>{course.name}</h3>
             
         <table>
             <thead>
@@ -15,20 +24,20 @@ export default function TableauCours({cours}){//cours est une liste contenant en
                     <th>Numeros de Client</th>
                     <th>Nom</th>
                     <th>Etat de la comande</th>
-                    <th>Email</th>
+                    
                 </tr>
             </thead>
             <tbody>
             {
-                cours[1].map((eleve) => {
-                    num+=1;
+                orders.length !== 0 &&
+                orders.map((order) => {
                     return(
-                <tr>
-                    <td>{num}</td>
-                    <td className="numberCenter">{eleve.order_number}</td>
-                    <td>{eleve.billing_name}</td>
-                    <td className="numberCenter">{eleve.order_status}</td>
-                    <td>{eleve.billing_email}</td>
+                <tr key={order.id}>
+                    <td>{orders.indexOf(order)+1}</td>
+                    <td className="numberCenter">{order.orders_id}</td>
+                    <td>{order.customer_name}</td>
+                    <td className="numberCenter">{order.status}</td>
+                    
                 </tr>
                 )}
                 )
