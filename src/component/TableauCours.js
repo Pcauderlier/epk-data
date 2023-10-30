@@ -24,6 +24,7 @@ export default function TableauCours({course,ordersList}){
                     <th>Numeros de Client</th>
                     <th>Nom</th>
                     <th>Etat de la comande</th>
+                    <th>Prix TVAC </th>
                     
                 </tr>
             </thead>
@@ -37,6 +38,7 @@ export default function TableauCours({course,ordersList}){
                     <td className="numberCenter">{order.orders_id}</td>
                     <td>{order.customer_name}</td>
                     <td className="numberCenter">{order.status}</td>
+                    <td className="numberCenter">{order.price.TVAC} €</td>
                     
                 </tr>
                 )}

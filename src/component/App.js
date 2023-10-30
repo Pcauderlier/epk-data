@@ -6,6 +6,8 @@ import Axios from 'axios';
 import { useEffect, useState } from 'react';
 
 function App() {
+  let [courseList, updateCourseList] = useState(false);
+  let [message, updateMessage] = useState('')
   const getOrders = async (course) => {
     try{
       console.log('get orders est appelé')
@@ -24,9 +26,7 @@ function App() {
         console.log(err)
         return []
     }
-  }
-
-
+  };
   const getCourse = async () => {
     console.log("get course appelé")
     let ajd = new Date();
@@ -42,23 +42,39 @@ function App() {
       return false
     }
   }
-  let [courseList, updateCourseList] = useState(false)
-  
+  const update = async () => {
+    try{
+      let response = await Axios.post(`http://localhost:3001/orders/`);
+      if (response.status ===200){
+        updateMessage(response.data.message);
+      }
+    }
+    catch(err){
+      updateMessage(err)
+    }
+
+  }  
   useEffect(() => {
     getCourse()
-  },[])
+  },[message])
   // let sortedData= dataSort(comandes)
   return (
-    <div id="page ">
+    <div >
       <SearchBar titre={"Présence à l'EPK"}/>
-      <div id="boiteCours">
-        {
-          courseList !== false &&
-          courseList.map((course) => (
+      <div id="page"> 
+        <div id='search'> 
+          <button className="button" onClick={()=> update()}>Refresh</button>
+          <div>{message}</div>
+        </div>
+        <div id="boiteCours">
+          {
+            courseList !== false &&
+            courseList.map((course) => (
 
-          <TableauCours key={course.id} course={course} ordersList={getOrders(course)}/>
-        ))
-        }
+            <TableauCours key={course.id} course={course} ordersList={getOrders(course)}/>
+          ))
+          }
+        </div>
       </div>
     </div>
 

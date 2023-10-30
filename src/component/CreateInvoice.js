@@ -4,7 +4,7 @@ import logo from "../img/LOGO_EPK.png"
 
 
 
-export default function CreateInvoice({commande}){
+export default function CreateInvoice({orders,eleve,course}){
     
     const style = StyleSheet.create({
         page : {
@@ -85,33 +85,33 @@ export default function CreateInvoice({commande}){
                     <Text>IBAN  BE 49-7320-5818-2671</Text>
                 </View>
                 <View style={style.p2}>
-                    <Text style={{textDecoration : 'underline', fontSize : 14}}>Facture n°EPK 23-{commande.order_number}</Text>
-                    <Text>Date : {commande.order_date.split(' ')[0]}</Text>
+                    <Text style={{textDecoration : 'underline', fontSize : 14}}>Facture n°EPK 23-{orders.order_id}</Text>
+                    <Text>Date : {orders.date_created.split(' ')[0]}</Text>
                 </View>
                 <View style={style.p3}>
                     <Text style={{textDecoration : 'underline', fontSize : 14}}>Client :</Text>
-                    <Text>{commande.sociaty}</Text>
-                    <Text>{commande.TVA}</Text>
-                    <Text>{commande.billing_name}</Text>
-                    <Text>{commande.sociaty_adress}</Text>
-                    <Text>{commande.sociaty_city.replace(',','')}</Text>
+                    <Text>{eleve.sociaty}</Text>
+                    <Text>{eleve.TVA}</Text>
+                    <Text>{orders.customer_name}</Text>
+                    <Text>{eleve.adress.street}</Text>
+                    <Text>{eleve.adress.city} , {eleve.adress.postcode}</Text>
                     
                 </View>
                 <View style={style.tableau}>
                     <View style={[style.ligne, {height : 100}]}>
-                        <Text style={[style.item,{ width : 440, fontSize : 16}]}>{commande.products[0].name}</Text>
+                        <Text style={[style.item,{ width : 440, fontSize : 16}]}>{course.name}</Text>
                     </View>
                     <View style={style.ligne}>
                         <Text style={style.item}>Total TVAC</Text>
-                        <Text style={style.item}>{commande.order_total} €</Text>
+                        <Text style={style.item}>{orders.price.TVAC} €</Text>
                     </View>
                     <View style={style.ligne}>
                         <Text style={style.item}>Total HTVA </Text>
-                        <Text style={style.item}>{commande.products[0].item_price} €</Text>
+                        <Text style={style.item}>{orders.price.HTVA} €</Text>
                     </View>
                     <View style={style.ligne}>
                         <Text style={style.item}>Total TVA </Text>
-                        <Text style={style.item}>{(commande.order_total-commande.products[0].item_price).toFixed(2)}</Text>
+                        <Text style={style.item}>{orders.price.TVA}</Text>
                     </View>
                 </View>
                 <View style={style.p4}>
@@ -137,7 +137,7 @@ export default function CreateInvoice({commande}){
             <div>
                 <PDFDownloadLink
                 document={<Invoice/>}
-                fileName={`EPK23-${commande.order_number}`}>
+                fileName={`EPK23-${orders.orders_id}`}>
                     <button className="button">Télécharger la Facture</button>
                 </PDFDownloadLink>
             </div>

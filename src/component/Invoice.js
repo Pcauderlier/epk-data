@@ -1,56 +1,64 @@
 import SearchBar from "./SearchBar"
-import comandes from '../data/data.json'
 import { useRef, useState } from "react"
 import React from "react"
 import CreateInvoice from "./CreateInvoice"
 import '../style/Invoice.css'
+import Axios from "axios"
 
 
 export default function Invoice(){
-    let [search, updateSearch] = useState('')
-    let [afficherDonne, updateAfficherDonne] = useState(false)
-    let [com, updateCom] =useState(false);
-    let [resetVar, updateResetVar] = useState(false)
+    let [input, updateInput] = useState('');
+    let [order, updateOrder] = useState(false);
+    let [course, updateCourse] = useState();
+    let [eleve, updateEleve] = useState();
     let sociaty = useRef();
     let TVA = useRef();
     let adress = useRef();
     let city = useRef();
+    let postcode = useRef();
+    let [resetVar, updateResetVar] = useState(false)
 
-    function searchCom(){
+    async function search(){ 
         if (resetVar){
             TVA.current.value = '';
             sociaty.current.value = '';
             adress.current.value = '';
             city.current.value = '';
-        }  
-        updateCom(false)
-        updateResetVar(false)
-        for (let order of comandes){
-            if (order.order_number === search){
-                updateCom(order)
-                updateResetVar(true)                             
+            postcode.current.value ='';
+        }
+        
+        try{
+            let response = await Axios.get(`http://localhost:3001/orders/${input}`)
+            if (response.status === 200){
+                
+                const courseRequest = await Axios.get(`http://localhost:3001/course/${response.data.course_id}`)
+                const eleveRequest = await Axios.get(`http://localhost:3001/eleve/${response.data.customer_id}`)
+                if(courseRequest.status === 200){
+                    updateCourse(courseRequest.data)
+                    console.log(course)
+                }
+                if(eleveRequest.status === 200){
+                    updateEleve(eleveRequest.data)
+                }
+                updateOrder(response);
+                updateResetVar(true)
             }
         }
-        updateAfficherDonne(true)
-              
+        catch (err){
+            console.log(err)
+        }
+            
     }
 
-    function modfif(){
-        let newSociaty = com.sociaty;
-        let newSociatyCity = com.sociaty_city;
-        let newSociatyAdress = com.sociaty_adress;
-
-        if (sociaty.current.value !== ''){
-            newSociaty = sociaty.current.value
-        }        
-        if (city.current.value !== ''){
-            newSociatyCity = city.current.value
-        }
-        if (adress.current.value !== ''){
-            newSociatyAdress = adress.current.value
-        }
-        updateCom({...com, sociaty : newSociaty, sociaty_adress : newSociatyAdress, sociaty_city : newSociatyCity, TVA : TVA.current.value})
-        console.log(com)
+    async function modfif(){
+        console.log('coucou')
+        let newSociaty = sociaty.current.value === ''? eleve.sociaty : sociaty.current.value;
+        let newSociatyCity = city.current.value === '' ? eleve.adress.city : city.current.value;
+        let newSociatyAdress = adress.current.value === '' ? eleve.adress.street : adress.current.value;
+        let newTVA = TVA.current.value === '' ? eleve.TVA : TVA.current.value;
+        let newPostcode = postcode.current.value === '' ? eleve.adress.postcode : postcode.current.value;
+        updateEleve({...eleve, sociaty : newSociaty, adress : {city : newSociatyCity , street : newSociatyAdress, postcode : newPostcode}, TVA : newTVA});
+       // A rajouter : methode pour update la base de donnée avec PUT
     }
     
     return (
@@ -59,57 +67,60 @@ export default function Invoice(){
             <div id="invoicePage">
                 <div id="searchBox">
                     <label>Entrer un Numéro de commande  </label>
-                    <input type='number' onChange={(e) => updateSearch(e.target.value)}></input>
-                    <button className="button" onClick={()=>{searchCom()}}>rechercher</button>
+                    <input type='number' onChange={(e) => updateInput(e.target.value)}></input>
+                    <button className="button" onClick={()=>{search()}}>rechercher</button>
                 </div>
                 
-                    {!afficherDonne ? 
-                    <div></div>
-                    :
-                    (typeof(com) === 'boolean' ? 
+                    {order !== false && 
+                    
+                    (order.status !==200 ? 
                     <div id="erreurMessage">Numéros de comande invalide ou introuvable</div>
                     :
                     <div id="data">
                         <div id="formBox">
                             <div className="infoBox">
-                                Numéros de commande :  {com.order_number} 
+                                Numéros de commande :  {order.data.orders_id} 
                             </div>
                             <div className="infoBox">
-                                Etats de la commande :  {com.order_status} 
+                                Etats de la commande :  {order.data.status} 
                             </div>
                             <div className="infoBox">
-                                <div>Nom du client : {com.billing_name}</div>
+                                <div>Nom du client : {order.data.customer_name}</div>
                             </div>
                             <div className="infoBox">
-                                <div>Description : {com.products[0].name}</div>
+                                <div>Description : {course.name}</div>
                             </div>
                             <div className="infoBox">
-                                <div>Date : {com.order_date}</div>
+                                <div>Date : {order.data.date_created}</div>
                             </div>
                             <div className="infoBox">
                                 <label>Nom de la societé :  </label>
-                                <input type='text' placeholder={com.sociaty} ref={sociaty}></input> 
+                                <input type='text' placeholder={eleve.sociaty} ref={sociaty}></input> 
                             </div>
                             <div className="infoBox">
                                 <label>Numéros de TVA : </label>
-                                <input type='text' ref={TVA}></input>
+                                <input type='text' placeholder={eleve.TVA} ref={TVA}></input>
                             </div>
                             <div className="infoBox">
                                 <label>Adresse societé :  </label>
-                                <input type='text' placeholder={com.sociaty_adress} ref={adress}></input> 
+                                <input type='text' placeholder={eleve.adress.street} ref={adress}></input> 
                             </div>
                             <div className="infoBox">
                                 <label>Ville :  </label>
-                                <input type='text' placeholder={com.sociaty_city} ref={city}></input> 
+                                <input type='text' placeholder={eleve.adress.city } ref={city}></input> 
+                            </div>  
+                            <div className="infoBox">
+                                <label>Code Postal :  </label>
+                                <input type='text' placeholder={eleve.adress.postcode} ref={postcode}></input> 
                             </div>              
                             <div className="infoBox">
-                                <div>Total TVAC : {com.order_total} € </div>
+                                <div>Total TVAC : {order.data.price.TVAC} € </div>
                             </div>
                             <div className="infoBox">
-                                <div>Total HTVA : {com.products[0].item_price} €</div>
+                                <div>Total HTVA : {order.data.price.HTVA} €</div>
                             </div>
                             <div className="infoBox">
-                                <div>Total TVA : {(com.order_total-com.products[0].item_price).toFixed(2)} €</div>
+                                <div>Total TVA : {order.data.price.TVA} €</div>
                             </div>
                             <div>
                                 <button className="button" onClick={() => modfif()}>Modifier</button>
@@ -117,7 +128,7 @@ export default function Invoice(){
                                                 
                         </div>
                         <div id="invoiceBox">
-                        <CreateInvoice commande={com}/>
+                        <CreateInvoice orders={order.data} course={course} eleve={eleve}/>
                         </div>
                     </div>
                     )
@@ -128,10 +139,3 @@ export default function Invoice(){
         
     )   
     }
-
-    // date.split(' ')[0])
-    // city.replace(',','')
-    // {/* <CreateInvoice commande={com}/> */}
-    //  {/* <PDFDownloadLink document={<CreateInvoice/>} fileName="Test">
-    //                         {({loading}) => (loading ? <button>Chargement ... </button> : <button>Telecharger Facture</button>)}
-    //         </PDFDownloadLink> */}
