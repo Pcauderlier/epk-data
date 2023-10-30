@@ -16,16 +16,16 @@ export default function Invoice(){
     let adress = useRef();
     let city = useRef();
     let postcode = useRef();
-    let [resetVar, updateResetVar] = useState(false)
 
     async function search(){ 
-        if (resetVar){
-            TVA.current.value = '';
-            sociaty.current.value = '';
-            adress.current.value = '';
-            city.current.value = '';
-            postcode.current.value ='';
-        }
+        
+        // if (resetVar){
+        //     TVA.current.value = '';
+        //     sociaty.current.value = '';
+        //     adress.current.value = '';
+        //     city.current.value = '';
+        //     postcode.current.value ='';
+        // }
         
         try{
             let response = await Axios.get(`http://localhost:3001/orders/${input}`)
@@ -41,17 +41,16 @@ export default function Invoice(){
                     updateEleve(eleveRequest.data)
                 }
                 updateOrder(response);
-                updateResetVar(true)
             }
         }
         catch (err){
+            updateOrder(err.response)
             console.log(err)
         }
             
     }
 
     async function modfif(){
-        console.log('coucou')
         let newSociaty = sociaty.current.value === ''? eleve.sociaty : sociaty.current.value;
         let newSociatyCity = city.current.value === '' ? eleve.adress.city : city.current.value;
         let newSociatyAdress = adress.current.value === '' ? eleve.adress.street : adress.current.value;
@@ -73,8 +72,8 @@ export default function Invoice(){
                 
                     {order !== false && 
                     
-                    (order.status !==200 ? 
-                    <div id="erreurMessage">Numéros de comande invalide ou introuvable</div>
+                    (order.status === 404 ? 
+                    <div id="erreurMessage">{order.data.message}</div>
                     :
                     <div id="data">
                         <div id="formBox">

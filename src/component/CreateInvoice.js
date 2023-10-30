@@ -95,6 +95,7 @@ export default function CreateInvoice({orders,eleve,course}){
                     <Text>{orders.customer_name}</Text>
                     <Text>{eleve.adress.street}</Text>
                     <Text>{eleve.adress.city} , {eleve.adress.postcode}</Text>
+                    <Text>{eleve.adress.country}</Text>
                     
                 </View>
                 <View style={style.tableau}>
