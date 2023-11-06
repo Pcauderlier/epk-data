@@ -5,6 +5,8 @@ import SearchBar from './SearchBar';
 import Axios from 'axios';
 import { useEffect, useState } from 'react';
 
+const HostingMachineIp = "192.168.0.69:3001"
+
 function App() {
   let [courseList, updateCourseList] = useState(false);
   let [message, updateMessage] = useState('')
@@ -12,7 +14,7 @@ function App() {
     try{
       console.log('get orders est appelé')
       if (course.orders_list.length !== 0){
-        const response = await Axios.get(`http://localhost:3001/orders/course/${course.course_id}`);
+        const response = await Axios.get(`http://${HostingMachineIp}/orders/course/${course.course_id}`);
         if (response.status === 200){
           let r = await response.data
           return(r)
@@ -32,7 +34,7 @@ function App() {
     let ajd = new Date();
     let date = new Date().setDate(ajd.getDate()-7)
     try{
-      let response = await Axios.get(`http://localhost:3001/course/after/${date}`);
+      let response = await Axios.get(`http://${HostingMachineIp}/course/after/${date}`);
       if( response.status === 200 ){
         updateCourseList(response.data)
       }
@@ -44,7 +46,7 @@ function App() {
   }
   const update = async () => {
     try{
-      let response = await Axios.post(`http://localhost:3001/orders/`);
+      let response = await Axios.post(`http://${HostingMachineIp}/orders/`);
       if (response.status ===200){
         updateMessage(response.data.message);
       }

@@ -1,5 +1,5 @@
 import SearchBar from "./SearchBar"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import React from "react"
 import CreateInvoice from "./CreateInvoice"
 import '../style/Invoice.css'
@@ -11,22 +11,45 @@ export default function Invoice(){
     let [order, updateOrder] = useState(false);
     let [course, updateCourse] = useState();
     let [eleve, updateEleve] = useState();
+    let [isRender, updateIsRender] = useState(false);
     let sociaty = useRef();
     let TVA = useRef();
     let adress = useRef();
     let city = useRef();
     let postcode = useRef();
 
+    function getIndice(){ // recup les index des cours dans courseList et renvois les orders qui correspondent
+        
+        let indice = eleve.course_list.map((nombre,index) => {
+            if(nombre === order.data.course_id ){
+                return index
+            }
+            else{
+                return -1
+            }
+        })
+
+        indice = indice.filter(index => index !== -1)
+        
+        let o = indice.map((n) => { 
+            if(eleve.orders_list[n] !== order.data.orders_id){
+                return eleve.orders_list[n]
+            }
+            else{
+                return -1
+            }
+        }) 
+        return o.filter(index => index !== -1)
+    }
+    
     async function search(){ 
-        
-        // if (resetVar){
-        //     TVA.current.value = '';
-        //     sociaty.current.value = '';
-        //     adress.current.value = '';
-        //     city.current.value = '';
-        //     postcode.current.value ='';
-        // }
-        
+        if (isRender){
+            TVA.current.value = '';
+            sociaty.current.value = '';
+            adress.current.value = '';
+            city.current.value = '';
+            postcode.current.value ='';        
+        }
         try{
             let response = await Axios.get(`http://localhost:3001/orders/${input}`)
             if (response.status === 200){
@@ -35,15 +58,17 @@ export default function Invoice(){
                 const eleveRequest = await Axios.get(`http://localhost:3001/eleve/${response.data.customer_id}`)
                 if(courseRequest.status === 200){
                     updateCourse(courseRequest.data)
-                    console.log(course)
                 }
                 if(eleveRequest.status === 200){
                     updateEleve(eleveRequest.data)
                 }
                 updateOrder(response);
+                
+                updateIsRender(true)
             }
         }
         catch (err){
+            updateIsRender(false)
             updateOrder(err.response)
             console.log(err)
         }
@@ -66,7 +91,7 @@ export default function Invoice(){
             <div id="invoicePage">
                 <div id="searchBox">
                     <label>Entrer un Numéro de commande  </label>
-                    <input type='number' onChange={(e) => updateInput(e.target.value)}></input>
+                    <input type='number' value={input} onChange={(e) => updateInput(e.target.value)}></input>
                     <button className="button" onClick={()=>{search()}}>rechercher</button>
                 </div>
                 
@@ -123,6 +148,15 @@ export default function Invoice(){
                             </div>
                             <div>
                                 <button className="button" onClick={() => modfif()}>Modifier</button>
+                                {getIndice().lenght !== 0 && 
+                                (<div> <p> Autre comandes liés :</p>
+                                {getIndice().map((id) => (
+                                    <button onClick={()=>{
+                                        updateInput(id)
+                                        
+                                        }} className="button">{id}</button>
+                                ))}
+                                </div>)}
                             </div>
                                                 
                         </div>
@@ -138,3 +172,4 @@ export default function Invoice(){
         
     )   
     }
+

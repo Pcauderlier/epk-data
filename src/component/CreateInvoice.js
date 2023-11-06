@@ -85,7 +85,7 @@ export default function CreateInvoice({orders,eleve,course}){
                     <Text>IBAN  BE 49-7320-5818-2671</Text>
                 </View>
                 <View style={style.p2}>
-                    <Text style={{textDecoration : 'underline', fontSize : 14}}>Facture n°EPK 23-{orders.order_id}</Text>
+                    <Text style={{textDecoration : 'underline', fontSize : 14}}>Facture n°EPK 23-{orders.orders_id}</Text>
                     <Text>Date : {orders.date_created.split(' ')[0]}</Text>
                 </View>
                 <View style={style.p3}>

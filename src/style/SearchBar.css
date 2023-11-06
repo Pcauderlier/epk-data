@@ -6,6 +6,7 @@
     flex-direction: row;
     z-index: 1;
     position: fixed;
+    border-radius: 0px 0px 60px 60px;
 }
 #logoEPK{
     height: 90%;
