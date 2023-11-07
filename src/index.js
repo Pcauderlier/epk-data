@@ -12,7 +12,8 @@ root.render(
     <Router>
       <Routes>
         <Route path='/' element={<App/>} />
-        <Route path='/invoice' element={<Invoice/>} />        
+        <Route path='/invoice' element={<Invoice/>} />   
+        '/invoice/pdf'     
       </Routes>
     </Router>
     
