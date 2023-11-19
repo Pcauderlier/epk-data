@@ -1,9 +1,10 @@
 import SearchBar from "./SearchBar"
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import React from "react"
 import CreateInvoice from "./CreateInvoice"
 import '../style/Invoice.css'
 import Axios from "axios"
+import host from '../host/host.json'
 
 
 export default function Invoice(){
@@ -51,11 +52,11 @@ export default function Invoice(){
             postcode.current.value ='';        
         }
         try{
-            let response = await Axios.get(`http://localhost:3001/orders/${input}`)
+            let response = await Axios.get(`http://${host.ip}/orders/${input}`)
             if (response.status === 200){
                 
-                const courseRequest = await Axios.get(`http://localhost:3001/course/${response.data.course_id}`)
-                const eleveRequest = await Axios.get(`http://localhost:3001/eleve/${response.data.customer_id}`)
+                const courseRequest = await Axios.get(`http://${host.ip}/course/${response.data.course_id}`)
+                const eleveRequest = await Axios.get(`http://${host.ip}/eleve/${response.data.customer_id}`)
                 if(courseRequest.status === 200){
                     updateCourse(courseRequest.data)
                 }

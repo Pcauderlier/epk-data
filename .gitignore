@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 /src/data
+/src/host
 
 # testing
 /coverage
