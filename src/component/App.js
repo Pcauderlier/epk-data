@@ -11,7 +11,9 @@ import host from '../host/host.json'
 function App() {
   let [courseList, updateCourseList] = useState(false);
   let [message, updateMessage] = useState('')
+  let [messageStat, updateMessageStat] = useState('')
   let [buttonMessage, updateButtonMessage] =  useState('Refresh');
+  let [buttonStatus, updateButtonStatus] =  useState('Refresh Status');
   const getOrders = async (course) => {
     try{
       console.log('get orders est appelé')
@@ -61,17 +63,39 @@ function App() {
     }
 
   }  
+  const updateStatus = async () => {
+    updateMessageStat('requete en cours, ne pas reapuyer sur les bouton avant que ce message n ai changer !');
+    updateButtonStatus("Ne pas réapuyer sur le bouton ! (cela peut prendre jusqu'a 5 minutes)")
+    try{
+      let response = await Axios.put(`http://${host.ipLocal}/orders/updateStatus`);
+      console.log(response);
+      if (response.status ===200){
+        updateMessageStat(response.data.message);
+        updateButtonStatus("Refresh Status");
+      }
+    }
+    catch(err){
+      updateMessageStat(err)
+    }
+
+  }  
   useEffect(() => {
     getCourse()
-  },[message])
+  },[message,messageStat])
   // let sortedData= dataSort(comandes)
   return (
     <div >
       <SearchBar titre={"Présence à l'EPK"}/>
       <div id="page"> 
         <div id='search'> 
+        <div>
           <button className="button" onClick={()=> update()} style={{backgroundColor :  buttonMessage !==  "Refresh" && "red" }}>{buttonMessage} </button>
           <div>{message}</div>
+        </div>
+        <div>
+          <button className='button' onClick={() => updateStatus()} style={{backgroundColor :  buttonStatus !==  "Refresh Status" && "red" }}>{buttonStatus} </button>
+          <div>{messageStat}</div>
+        </div>
         </div>
         <div className='filter'>
         {/* Filtre sur le status des cours ? */}
