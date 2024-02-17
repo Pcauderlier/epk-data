@@ -52,11 +52,11 @@ export default function Invoice(){
             postcode.current.value ='';        
         }
         try{
-            let response = await Axios.get(`http://${host.ip}/orders/${input}`)
+            let response = await Axios.get(`http://${host.ipLocal}/orders/${input}`)
             if (response.status === 200){
                 
-                const courseRequest = await Axios.get(`http://${host.ip}/course/${response.data.course_id}`)
-                const eleveRequest = await Axios.get(`http://${host.ip}/eleve/${response.data.customer_id}`)
+                const courseRequest = await Axios.get(`http://${host.ipLocal}/course/${response.data.course_id}`)
+                const eleveRequest = await Axios.get(`http://${host.ipLocal}/eleve/${response.data.customer_id}`)
                 if(courseRequest.status === 200){
                     updateCourse(courseRequest.data)
                 }

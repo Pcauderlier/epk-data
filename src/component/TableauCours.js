@@ -7,11 +7,30 @@ export default function TableauCours({course,ordersList}){
     useEffect(() => {
         if (ordersList){
             ordersList.then((response) => {
-                updateOrders(response)
+                updateOrders(combineNames(response))
             })
         }
     },[ordersList]);
-
+    function combineNames(l){
+        let newL = [];
+        let customerL = []
+        for (let order of l){
+            if (customerL.indexOf(order.customer_id) === -1){
+                customerL.push(order.customer_id)
+                newL.push(order)
+            }
+            else{
+                for (let newOrder of newL){
+                    if (newOrder.customer_id === order.customer_id){
+                        newOrder.price.TVAC += order.price.TVAC;
+                        newOrder.status += " + " + order.status;
+                        newOrder.orders_id += " + " + order.orders_id;
+                    }
+                }
+            }
+        }
+        return newL
+    }
     return (
         <div id="container">
        

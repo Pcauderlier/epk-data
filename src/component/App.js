@@ -11,11 +11,12 @@ import host from '../host/host.json'
 function App() {
   let [courseList, updateCourseList] = useState(false);
   let [message, updateMessage] = useState('')
+  let [buttonMessage, updateButtonMessage] =  useState('Refresh');
   const getOrders = async (course) => {
     try{
       console.log('get orders est appelé')
       if (course.orders_list.length !== 0){
-        const response = await Axios.get(`http://${host.ip}/orders/course/${course.course_id}`);
+        const response = await Axios.get(`http://${host.ipLocal}/orders/course/${course.course_id}`);
         if (response.status === 200){
           let r = await response.data
           return(r)
@@ -35,7 +36,7 @@ function App() {
     let ajd = new Date();
     let date = new Date().setDate(ajd.getDate()-7)
     try{
-      let response = await Axios.get(`http://${host.ip}/course/after/${date}`);
+      let response = await Axios.get(`http://${host.ipLocal}/course/after/${date}`);
       if( response.status === 200 ){
         updateCourseList(response.data)
       }
@@ -46,11 +47,13 @@ function App() {
     }
   }
   const update = async () => {
-    updateMessage('requete en cours, ne pas reapuyer sur le bouton avant que ce message n ai changer !')
+    updateMessage('requete en cours, ne pas reapuyer sur le bouton avant que ce message n ai changer !');
+    updateButtonMessage("Ne pas réapuyer sur le bouton !");
     try{
-      let response = await Axios.post(`http://${host.ip}/orders/`);
+      let response = await Axios.post(`http://${host.ipLocal}/orders/`);
       if (response.status ===200){
         updateMessage(response.data.message);
+        updateButtonMessage("Refresh");
       }
     }
     catch(err){
@@ -67,8 +70,11 @@ function App() {
       <SearchBar titre={"Présence à l'EPK"}/>
       <div id="page"> 
         <div id='search'> 
-          <button className="button" onClick={()=> update()}>Refresh </button>
+          <button className="button" onClick={()=> update()} style={{backgroundColor :  buttonMessage !==  "Refresh" && "red" }}>{buttonMessage} </button>
           <div>{message}</div>
+        </div>
+        <div className='filter'>
+        {/* Filtre sur le status des cours ? */}
         </div>
         <div id="boiteCours">
           {
