@@ -15,6 +15,7 @@ function App() {
   let [buttonMessage, updateButtonMessage] =  useState('Refresh');
   let [buttonStatus, updateButtonStatus] =  useState('Refresh Status');
   let [search, updateSearch] = useState(false)
+  let [isSearch, updateIsSearch] = useState(false)
   const orderRef = useRef(false)
   let [orderAdd, updateOrderAdd] = useState("")
   const getOrders = async (course) => {
@@ -83,6 +84,7 @@ function App() {
 
   }  
   async function addOrderRequest(){
+    updateIsSearch(true);
     const orderId = orderRef.current.value;
     try{
       const response = await Axios.post(`http://${host.ipLocal}/orders/addOne`,{id : orderId})
@@ -92,6 +94,7 @@ function App() {
     catch (err){
       updateOrderAdd(err.response.data.message)
     }
+    updateIsSearch(false)
   }
   useEffect(() => {
     getCourse()
@@ -114,7 +117,7 @@ function App() {
             {search ? (
               <>
                 <input ref={orderRef} type='text' placeholder='Numéros de commande'/>
-                <button className='button' onClick={() => addOrderRequest() }>Ajouter</button>
+                <button className='button' onClick={() => addOrderRequest() }style={{backgroundColor :  isSearch && "red" }}>Ajouter</button>
                 <div>{orderAdd}</div>
               </>
 
