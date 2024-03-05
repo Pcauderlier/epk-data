@@ -3,7 +3,7 @@ import '../style/App.css';
 import TableauCours from './TableauCours';
 import SearchBar from './SearchBar';
 import Axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef} from 'react';
 import host from '../host/host.json'
 
 
@@ -14,6 +14,9 @@ function App() {
   let [messageStat, updateMessageStat] = useState('')
   let [buttonMessage, updateButtonMessage] =  useState('Refresh');
   let [buttonStatus, updateButtonStatus] =  useState('Refresh Status');
+  let [search, updateSearch] = useState(false)
+  const orderRef = useRef(false)
+  let [orderAdd, updateOrderAdd] = useState("")
   const getOrders = async (course) => {
     try{
       console.log('get orders est appelé')
@@ -79,6 +82,17 @@ function App() {
     }
 
   }  
+  async function addOrderRequest(){
+    const orderId = orderRef.current.value;
+    try{
+      const response = await Axios.post(`http://${host.ipLocal}/orders/addOne`,{id : orderId})
+      updateOrderAdd(response.data.message)
+      
+    }
+    catch (err){
+      updateOrderAdd(err.response.data.message)
+    }
+  }
   useEffect(() => {
     getCourse()
   },[message,messageStat])
@@ -88,14 +102,27 @@ function App() {
       <SearchBar titre={"Présence à l'EPK"}/>
       <div id="page"> 
         <div id='search'> 
-        <div>
-          <button className="button" onClick={()=> update()} style={{backgroundColor :  buttonMessage !==  "Refresh" && "red" }}>{buttonMessage} </button>
-          <div>{message}</div>
-        </div>
-        <div>
-          <button className='button' onClick={() => updateStatus()} style={{backgroundColor :  buttonStatus !==  "Refresh Status" && "red" }}>{buttonStatus} </button>
-          <div>{messageStat}</div>
-        </div>
+          <div>
+            <button className="button" onClick={()=> update()} style={{backgroundColor :  buttonMessage !==  "Refresh" && "red" }}>{buttonMessage} </button>
+            <div>{message}</div>
+          </div>
+          <div>
+            <button className='button' onClick={() => updateStatus()} style={{backgroundColor :  buttonStatus !==  "Refresh Status" && "red" }}>{buttonStatus} </button>
+            <div>{messageStat}</div>
+          </div>
+          <div>
+            {search ? (
+              <>
+                <input ref={orderRef} type='text' placeholder='Numéros de commande'/>
+                <button className='button' onClick={() => addOrderRequest() }>Ajouter</button>
+                <div>{orderAdd}</div>
+              </>
+
+            ) :( 
+            <button className='button' onClick={() => updateSearch(true)}> Ajouter une commande </button>
+            )}
+            <div>{}</div>
+          </div>
         </div>
         <div className='filter'>
         {/* Filtre sur le status des cours ? */}
